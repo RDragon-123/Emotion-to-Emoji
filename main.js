@@ -12,7 +12,7 @@ function takesnapshot(){
     });
 }
 console.log("ml5 version",ml5.version)
-classifier=ml5.imageClassifier("https://teachablemachine.withgoogle.com/models/wVeewhJUg//model.json",modelLoaded)
+classifier=ml5.imageClassifier("https://teachablemachine.withgoogle.com/models/wVeewhJUg/model.json",modelLoaded)
 function modelLoaded(){
     console.log("Model is Loaded")
 }
@@ -23,4 +23,39 @@ function speak(){
     var utter=new SpeechSynthesisUtterance(data1+data2)
     synth.speak(utter)
 }
-speak()
+function identifyimage(){
+    img=document.getElementById("new_img")
+    classifier.classify(img,getResult)
+}
+function getResult(error,result){
+    if (error){
+       console.log(error)
+    }
+    else
+{
+    console.log (result)
+    document.getElementById("result_emotion_name").innerHTML=result[0].label
+    document.getElementById("result_emotion_name_2").innerHTML=result[1].label
+    prediction_1=result[0].label
+    prediction_2=result[1].label
+    speak()
+    
+    if (prediction_1=="Happy"){
+        document.getElementById("update_1").innerHTML="&#128522;"
+    }
+    else if (prediction_1=="Angry"){
+        document.getElementById("update_1").innerHTML="&#128545;"
+    }
+    else if (prediction_1=="Sad"){
+        document.getElementById("update_1").innerHTML="&#128532;"
+    }
+    if (prediction_2=="Happy"){
+        document.getElementById("update_2").innerHTML="&#128512;"
+    }
+    else if (prediction_2=="Angry"){
+        document.getElementById("update_2").innerHTML="&#128548;"
+    }
+    else if (prediction_2=="Sad"){
+        document.getElementById("update_2").innerHTML="&#128546;"
+    }
+}}
